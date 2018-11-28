@@ -1,0 +1,137 @@
+<div id="sectorMenuBase" ng-controller="viewPeController" ng-init="init_controller()" class="editorResource"> 
+
+	<section id="viewBook">  
+		<div class="container" id="container"> 
+			<div class="container_loader_book d-flex justify-content-center align-items-center">
+				<div class="loader_book book_load">
+					<figure class="page_load"></figure> 
+				</div>
+				<h1 class="text_load_book">{{ gss.load_book }}</h1>
+			</div>
+    	</div> 
+	 </section>
+
+	 <!-- Modal --> 
+	<div class="modal fade" id="activityModal" tabindex="-1" role="dialog" aria-labelledby="activityModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	  <div class="modal-dialog modal-lg" role="document"> 
+	    <div class="modal-content modal-content-activity br-1">
+	      <div class="modal-header"> 
+	      	<div class="modal-title fz1p5r p-2 w-100 {{ colors_style_head[activityOpen.head_style].class }} head_style" style="{{ 'background-image: url('+gss.path_head_imgs + activityOpen.head_img_path +')' }}"> 
+	      	{{ activityOpen.name }} </div>  
+	      </div>
+	      <div class="modal-body">
+	        <small>{{ activityOpen.description }}</small>  
+	        <div class="container-fluid">
+	        	<div class="row" id="data_send" ng-show="activityProccess == 0.5">
+					<div class="col-12">
+						<h1 class="ml4 text-center">
+							<div class="letters letters-1">{{ gss.this_activity_time }}</div>
+							<div class="letters letters-2">{{ gss.aviable_time + ': ' + activityOpen.time  }} <br>
+								<small class="text-secondary"> {{ gss.format + ': (minutos:segundos)' }} </small>
+							</div>
+							<div class="letters letters-3">
+								<button type="button" class="btn btn-secondary btn_continue br-2" data-dismiss="modal">{{ gss.cancel }}</button>
+	        					<button type="button" class="btn btn-raised btn-primary btn_continue br-2" ng-click="acceptTimer()">{{ gss.continue }}</button>
+							</div> 
+						</h1>
+					</div>
+				</div>  
+	        	<form id='form' class="fb-render p-2 animated hideSlideUpFast" ng-show="activityProccess == 1">
+	        	</form>
+	        	<div class="row" id="data_send" ng-show="activityProccess == 2">
+	        		<div class="col-12">
+	        			<form name="form_2">
+		        			<div class="form-group">
+		        				<label>{{ gss.student }}</label>
+		        				<input type="text" name="student_name" class="form-control" ng_model="data_send.student_name" /> 
+		        				<div class="alert alert-warning" role="alert" ng-show="data_send.student_name.length == 0">
+								 	{{ gss.error_name }}
+								</div>
+		        			</div>
+		        			<div class="form-group">
+		        				<label>{{ gss.student_mail + ' *' }}</label>
+		        				<input type="email" required name='student_mail' class="form-control" ng_model="data_send.student_mail" /> 
+		        				<div class="alert alert-warning" role="alert" ng-show="!form_2.student_mail.$valid">
+								 	{{ gss.error_mail }}
+								</div>
+		        			</div>
+		        			<div class="form-group">
+		        				<label>{{ gss.teacher_mail + ' *' }}</label>
+		        				<input type="email" required name='teacher_mail' ng-pattern="emailFormat" class="mail_teacher form-control" ng_model="data_send.teacher_mail" /> 
+								<div class="alert alert-warning" role="alert" ng-show="!form_2.teacher_mail.$valid">
+								 	{{ gss.error_mail }}
+								</div>
+		        			</div>
+		        		</form> 
+	        		</div>
+	        	</div>
+	        	<h1 class="ml11 text-center" id="sectorLoadSAQ" ng-show="activityProccess == 3 || activityProccess == 4">
+				  <span class="text-wrapper">
+				    <span class="line line1"></span>
+				    <span class="letters">{{ gss.sending_activity }}</span>
+				  </span>
+				</h1>
+				<div class="row" id="data_send" ng-show="activityProccess == 5">
+					<div class="col-12">
+						<h1 class="ml12 text-center">{{ gss.time_over }}</h1>
+					</div>
+				</div> 
+            </div>
+	      </div>
+	      <div class="modal-footer mf"> 
+	      	<button type="button" class="btn btn-secondary btn_continue br-2" ng-show="activityProccess == 1 && activityOpen.time_band != 1" data-dismiss="modal">{{ gss.cancel }}</button>
+	        <button type="button" class="btn btn-raised btn-primary btn_continue br-2" ng-show="activityProccess == 1" ng-click="getDataQuestions()">{{ gss.continue }}</button>
+	        <button type="button" class="btn btn-raised btn-primary btn_send br-2" ng-show="step2Activity && form_2.teacher_mail.$valid && form_2.student_mail.$valid && activityProccess < 3 " ng-click="sendTask()">{{ gss.send_task }}</button>
+	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 4 || activityProccess == 5" ng-click="closeModalActivity()">{{ gss.read_continue }}</button>
+	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 5" ng-click="repeatActivity()">{{ gss.repeat_activity }}</button> 
+	      </div>
+	    </div>
+	  </div>
+	</div> 
+
+	<div id="timewrapper" class="timewrapper topright-pgc"> 
+  	</div> 
+
+	<!-- resource modal -->
+	<div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	  <div class="modal-dialog modal-lg" role="document"> 
+	    <div class="modal-content modal-content-activity br-1">
+	      <div class="modal-header"> 
+	      	<div class="modal-title fz1p5r p-2 w-100 {{ colors_style_head[resourceOpen.head_style].class }} head_style" style="{{ 'background-image: url('+gss.path_head_imgs + resourceOpen.head_img_path +')' }}"> 
+	      	{{ resourceOpen.name }} </div>  
+	      </div>
+	      <div class="modal-body">
+	        <small>{{ resourceOpen.description }}</small>  
+	        <div class="row">
+              <div class="col-12" ng-show="resourceOpen.type == 3">
+                <a class="btn btn-ebio br-2 ml-3" href="{{ resourceOpen.url }}" target="_blank">{{ gss.open_link }}</a>
+              </div>
+              <div class="col-12" ng-show="resourceOpen.type == 4">
+                <div class="row d-flex justify-content-center">
+                  <div class="col-4 d-flex flex-wrap justify-content-center item-temp-upload" ng-repeat="pic in resourceOpen.files">
+                    <div class="col-12 d-flex justify-content-center align-items-center flex-wrap">
+                      <img ng-if="isImage(pic.filename)" ng-src="{{ gss.path_pecontent_upload + pic.folder + '/' + pic.filename }}" class="thumb-x2 mx-2">
+                      <img ng-if="isVideo(pic.filename) || isAudio(pic.filename)" ng-src="{{ gss.path_webcontent + 'play_icon_blue.png' }}" class="thumb-x2 mx-2">
+                      <img ng-if="!isVideo(pic.filename) && !isImage(pic.filename)" ng-src="{{ gss.path_webcontent + 'document_icon_blue.png' }}" class="thumb-x2 mx-2">
+                    </div>
+                    <small class="w-100 text-center">{{ pic.name }}</small>
+                    <a ng-href="{{ gss.path_pecontent_upload + pic.folder + '/' + pic.filename }}" download class="btn btn-ebio br-2" >{{ gss.download }}</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="p-3" ng-bind-html="resourceOpen.text_extra | trust">
+                </div>
+              </div>
+            </div>
+	      </div>
+	      <div class="modal-footer mf">  
+	        <button type="button" class="btn btn-secondary ml-1 mr-1 br-2"  data-dismiss="modal">{{ gss.close }}</button> 
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<span class="blink_resources" ng-click="showResourcesAviables()" id="blink_resources_l"><i class="fas fa-eye fa-lg text-white"></i></span>
+	<span class="blink_resources" ng-click="showResourcesAviables()" id="blink_resources_r"><i class="fas fa-eye fa-lg text-white"></i></span>
+</div>

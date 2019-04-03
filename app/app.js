@@ -11,7 +11,7 @@ app.config(['$routeProvider', '$locationProvider', '$httpProvider', function($ro
     $route.when('/demo/:bookcode/:bookname', { 
     	templateUrl: 'app/pages/viewDemo.html',  
     	controller: 'viewDemoController'
-    }).when('/pe/:bookcode/:numberunity', { 
+    }).when('/pe/:bookcode/:numberunity/:class_code', { 
     	templateUrl: 'app/pages/viewPe.html',  
     	controller: 'viewPeController'
     }).when('/404', { 

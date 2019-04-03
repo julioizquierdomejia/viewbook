@@ -1,18 +1,19 @@
-<div id="sectorMenuBase" ng-controller="viewPeController" ng-init="init_controller()" class="editorResource"> 
-
-	<section id="viewBook">  
+<div id="sectorMenuBase" ng-controller="viewPeController" ng-init="init_controller()" class="editorResource">  
+ 
+ 	<section id="viewBook">  
 		<div class="container" id="container"> 
-			<div class="container_loader_book d-flex justify-content-center align-items-center">
+			<div class="container_loader_book d-flex justify-content-center align-items-center flex-wrap">
 				<div class="loader_book book_load">
 					<figure class="page_load"></figure> 
 				</div>
-				<h1 class="text_load_book">{{ gss.load_book }}</h1>
+				<h1 class="text_load_book w-100" ng-hide="noLoad">{{ gss.load_book }}</h1>
+				<h4 class="text_load_book w-100" ng-show="noLoad">{{ gss.link_bad }}</h4>
 			</div>
     	</div> 
 	 </section>
 
-	 <!-- Modal --> 
-	<div class="modal fade" id="activityModal" tabindex="-1" role="dialog" aria-labelledby="activityModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	 <!-- Modal -->  
+	<div class="d-none" id="activityModal" tabindex="-1" role="dialog" aria-labelledby="activityModal" aria-hidden="true" data-keyboard="false" data-backdrop="static"> 
 	  <div class="modal-dialog modal-lg" role="document"> 
 	    <div class="modal-content modal-content-activity br-1">
 	      <div class="modal-header"> 
@@ -39,7 +40,7 @@
 	        	<form id='form' class="fb-render p-2 animated hideSlideUpFast" ng-show="activityProccess == 1">
 	        	</form>
 	        	<div class="row" id="data_send" ng-show="activityProccess == 2">
-	        		<div class="col-12">
+	        		<div class="col-12" ng-show="!isJoined">
 	        			<form name="form_2">
 		        			<div class="form-group">
 		        				<label>{{ gss.student }}</label>
@@ -64,6 +65,29 @@
 		        			</div>
 		        		</form> 
 	        		</div>
+	        		<div class="col-12" ng-show="isJoined">
+	        			<h3 class="display-4">{{ gss.title_confirm_reg_activity }}</h3>
+	        			<div class="row row m-1 px-2 pt-3 br-2 bg-greyLight">
+	        				<div class='col-6'>
+	        					<p><i class="fas fa-book"></i>&nbsp;{{ gss.book + ': ' + book.name }}</p>
+	        					<p><i class="fas fa-list-ol"></i>&nbsp;{{ gss.unity + ': ' + unity.number + '. ' + unity.name }}</p> 
+	        					<p></p>
+	        					<p><i class="fas fa-list-ol"></i>&nbsp;{{ gss.activity + ': ' + activityOpen.name }}</p>	
+	         					<small>{{ activityOpen.description }}</small>	
+	         					<p><i class="far fa-file"></i>&nbsp;{{ gss.page + ': ' +activityOpen.page }}</p>
+	        				</div>
+	        				<div class='col-6'>
+	        					<div class="text-center pt-3 pb-2">
+	        						<img class="imgMiniClass" ng-src="{{ gss.path_scholl_media + class_info.amb + '.png' }}" alt="{{ c.amb }}" />
+	        					</div>
+	         					<p class="text-center"><i class="fas fa-chalkboard-teacher"></i>&nbsp;{{ gss.class + ': ' + class_info.name }}
+	         						<small>{{ class_info.description }}</small>
+	         					</p>
+	         					
+	         					<p class="text-center"><i class="fas fa-user-graduate"></i>&nbsp;{{ gss.teacher + ': ' + class_info.teacher_first_name + ' ' + class_info.teacher_last_name }}</p>
+	        				</div>
+	        			</div>
+	        		</div>
 	        	</div>
 	        	<h1 class="ml11 text-center" id="sectorLoadSAQ" ng-show="activityProccess == 3 || activityProccess == 4">
 				  <span class="text-wrapper">
@@ -78,10 +102,17 @@
 				</div> 
             </div>
 	      </div>
-	      <div class="modal-footer mf"> 
+	      <div class="modal-footer mf" ng-show="!isJoined"> 
 	      	<button type="button" class="btn btn-secondary btn_continue br-2" ng-show="activityProccess == 1 && activityOpen.time_band != 1" data-dismiss="modal">{{ gss.cancel }}</button>
 	        <button type="button" class="btn btn-raised btn-primary btn_continue br-2" ng-show="activityProccess == 1" ng-click="getDataQuestions()">{{ gss.continue }}</button>
 	        <button type="button" class="btn btn-raised btn-primary btn_send br-2" ng-show="step2Activity && form_2.teacher_mail.$valid && form_2.student_mail.$valid && activityProccess < 3 " ng-click="sendTask()">{{ gss.send_task }}</button>
+	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 4 || activityProccess == 5" ng-click="closeModalActivity()">{{ gss.read_continue }}</button>
+	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 5" ng-click="repeatActivity()">{{ gss.repeat_activity }}</button> 
+	      </div>
+	      <div class="modal-footer mf" ng-show="isJoined"> 
+	      	<button type="button" class="btn btn-secondary btn_continue br-2" ng-show="activityOpen.time_band != 1 && (activityProccess != 4)" data-dismiss="modal">{{ gss.cancel }}</button>
+	      	<button type="button" class="btn btn-raised btn-primary btn_continue br-2" ng-show="activityProccess == 1" ng-click="getDataQuestions()">{{ gss.continue }}</button>
+	        <button type="button" class="btn btn-raised btn-primary btn_send br-2" ng-show="step2Activity && (activityProccess != 4)" ng-click="sendTaskJoin()">{{ gss.send_task }}</button>
 	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 4 || activityProccess == 5" ng-click="closeModalActivity()">{{ gss.read_continue }}</button>
 	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 5" ng-click="repeatActivity()">{{ gss.repeat_activity }}</button> 
 	      </div>
@@ -92,8 +123,61 @@
 	<div id="timewrapper" class="timewrapper topright-pgc"> 
   	</div> 
 
+  	<!-- view activity modal -->
+	<div class="d-none fade" id="activityView" tabindex="-1" role="dialog" aria-labelledby="activityView" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	  <div class="modal-dialog modal-lg" role="document"> 
+	    <div class="modal-content modal-content-activity br-1">
+	      <div class="modal-header">  
+	      	<nav class="navbar navbar-expand-lg w-100 nav-evaluate" ng-class="averageData.class"> 
+				<a class="navbar-brand text-white" href="#" ng-class="{ 'text-white' : activityView.estatus_evaluate == '2' }">
+					<i class="fas fa-clipboard-check"></i>
+					{{ gss.activity_performed }}  
+				</a> 
+				<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+					<li class="nav-item active bg-white br-1"> 
+						<a class="nav-link text-dark font-weight-bold" href="docente" ng-show="activityView.estatus_evaluate == '1'" ng-class="averageData.class_color"> <i class="far fa-clock"></i> {{ gss.wait_correction }} </a>
+						<a class="nav-link text-success font-weight-bold" href="docente" ng-show="activityView.estatus_evaluate == '2'" ng-class="averageData.class_color"> <i class="fas fa-check"></i> {{ gss.corrected }} </a> 
+					</li>   
+				</ul>
+				<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+					<li class="nav-item active bg-white br-1" ng-show="activityView.estatus_evaluate == '2'">
+						<a class="nav-link font-weight-bold" href="docente" ng-class="averageData.class_color"> <i class="fas" ng-class="averageData.icon"></i> {{ gss.calification + ': ' + averageData.text }} </a>
+					</li>  
+					<li class="nav-item active">
+						<a class="nav-link text-success font-weight-bold bg-info br-1" href="docente" title="Ampliar detalle"> <i class="fas fa-expand-arrows-alt text-white"></i> </a>
+					</li>  
+				</ul>
+			</nav>  
+	      </div>
+	       <div class="modal-header">  
+	      	<div class="modal-title fz1p5r p-2 w-100 {{ colors_style_head[activityView.head_style].class }} head_style" style="{{ 'background-image: url('+gss.path_head_imgs + activityView.head_img_path +')' }}"> 
+	      	{{ activityView.name }} </div>  
+	      </div>
+	      <div class="modal-body">
+	        <small>{{ activityView.description }}</small>  
+	        <div class="row mx-2"> 
+	        	<div class="col-12">
+	        		<div class="form-render-view">
+		        		
+		        	</div>
+	        	</div> 
+	        	<div class="col-12 mt-4">
+                    <label>{{ gss.comment_general_evaluate + ':' }} </label>
+                    <div name="comments" id="comments" rows="3" ng-bind="questions_head.comment" class="w-100 p-2 commentEvaluate"></div>
+                    <div class="mt-2 font-italic">{{ gss.realized_at + ': ' + questions_head.date_resolved }} </div>
+                    <div class="font-italic">{{ gss.evaluate_at + ': ' + questions_head.date_scored }} </div>
+                </div>
+            </div>
+	      </div>
+	      <div class="modal-footer mf">  
+	        <button type="button" class="btn btn-secondary ml-1 mr-1 br-2"  data-dismiss="modal">{{ gss.close }}</button> 
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
 	<!-- resource modal -->
-	<div class="modal fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+	<div class="d-none fade" id="resourceModal" tabindex="-1" role="dialog" aria-labelledby="resourceModal" aria-hidden="true" data-keyboard="false" data-backdrop="static">
 	  <div class="modal-dialog modal-lg" role="document"> 
 	    <div class="modal-content modal-content-activity br-1">
 	      <div class="modal-header"> 
@@ -131,7 +215,8 @@
 	    </div>
 	  </div>
 	</div>
-
+    <!--
 	<span class="blink_resources" ng-click="showResourcesAviables()" id="blink_resources_l"><i class="fas fa-eye fa-lg text-white"></i></span>
 	<span class="blink_resources" ng-click="showResourcesAviables()" id="blink_resources_r"><i class="fas fa-eye fa-lg text-white"></i></span>
+    -->
 </div>

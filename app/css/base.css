@@ -229,3 +229,23 @@ img.thumb-x2 { height: 100px; }
 div.letters.letters-1 {    font-size: 1.6rem;   }
 div.letters.letters-2 {    font-size: 1.3rem;  margin: 2rem 0;   color: var(--ebiocolor);  }
 .small, small { font-size: 60%; }
+
+.form-control.inputRegular{ padding: 11px 0 !important; }
+.form-wrap.form-builder .fb-checkbox-group .checkbox-inline input, .form-wrap.form-builder .fb-checkbox-group .checkbox input,
+.form-wrap.form-builder .fb-checkbox-group .checkbox-inline input, .form-wrap.form-builder .fb-radio-group .radio-group input,
+.fb-checkbox-group .checkbox-inline input, .fb-checkbox-group .checkbox input, .fb-checkbox-group .checkbox-inline input, .fb-radio-group .radio-group input
+ {  display: initial;   height: initial;  width: initial; }
+ .bg-greyLight {     background: #f3f3f3; }
+ .imgMiniClass { width: 80px; margin-top: -20px;  margin-left: 10px;  margin-right: 10px !important; }
+
+.nav-evaluate{ border: 4px solid white;  border-bottom: none;   }
+.nav-evaluate.wait{ background-color: #adadad; }
+.nav-evaluate.deficient{ background-color: #f37167; }
+.nav-evaluate.regular{ background-color: var(--orange); }
+.nav-evaluate.good{ background-color: var(--info); }
+.nav-evaluate.excelent{ background-color: var(--success); }
+
+.nav-evaluate-detail { border: initial;   border-radius: 0 0 .5rem .5rem;   color: white; }
+.commentEvaluate {  border-color: rgb(191, 191, 191); box-shadow: rgb(199, 199, 199) 0px 0px 3px; }
+
+.modal-dialog {  width: 40% !important;  min-width: 500px !important;  }

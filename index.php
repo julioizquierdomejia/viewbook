@@ -17,6 +17,7 @@
     <link type="text/css" rel="stylesheet" href="../lib/circlecss/circle.css"></link> 
     <link type="text/css" rel="stylesheet" href="../lib/formbuilder/css/image.css"></link> 
     <link type="text/css" rel="stylesheet" href="../lib/formbuilder/css/konva.css"></link>
+    <link type="text/css" rel="stylesheet" href="../lib/formbuilder/css/dragg.css"></link>
     <link rel="stylesheet" href="../lib/hovercss/hover.min.css">  
     <link rel="stylesheet" type="text/css" href="app/css/base.css">
 </head>   
@@ -25,6 +26,9 @@
     </div> 
 
     <script src="app/js/jquery.min.js"></script>
+
+    <script type="text/javascript" src="../lib/jquery/ui/jquery-ui.min.js"></script>
+
     <script src="app/js/html2canvas.min.js"></script>
     <script src="app/js/three.min.js"></script>
     <script src="app/js/pdf.min.js"></script>  
@@ -51,6 +55,7 @@
     <script type="text/javascript" src="../lib/formbuilder/form-render.min.js"></script>
     <script type="text/javascript" src="../lib/formbuilder/control_plugins/image.js"></script>
     <script type="text/javascript" src="../lib/formbuilder/control_plugins/konva.js"></script>
+    <script type="text/javascript" src="../lib/formbuilder/control_plugins/dragg.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
 
@@ -62,8 +67,9 @@
     <script type="text/javascript" src="../adminpe/app/services/peconfig.js"></script>
     <script type="text/javascript" src="../lib/services/sesion.js"></script> 
     <script type="text/javascript" src="../lib/services/localstorage.js"></script>  
-    <script type="text/javascript" src="../lib/services/globalSettings.js"></script> 
-    <script type="text/javascript" src="../lib/services/activity.js"></script>  
+    <script type="text/javascript" src="../lib/services/globalSettings.js"></script>
+    <script type="text/javascript" src="../lib/services/learning.js"></script> 
+    <script type="text/javascript" src="../lib/services/activity.js"></script>   
     <script type="text/javascript" src="../lib/services/util.js"></script>    
      
   </body>

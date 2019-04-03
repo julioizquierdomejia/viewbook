@@ -1802,7 +1802,7 @@
                 }), scene.view.addHandler(scene.ctrl), scene.ctrl.setPrinter(scene.bookPrinter);
                 var test = pageCallback(0);
                 scene.search = new _Search2.default(scene.view.getSearchView(), scene.book.getPages()), scene.search.onQuery = scene.book.setQuery.bind(scene.book), scene.book.addEventListener("searchResults", function(e) {
-                    scene.search.setResults(e.results, e.lastPage)
+                     scene.search.setResults(e.results, e.lastPage)
                 }), scene.thumbnails = new _Thumbnails2.default(scene.visual, scene.view.getThumbnailsView(), pageCallback, 2 * (sheets + 2), {
                     kWtoH: props.width / props.height
                 }), scene.tocCtrl = new _TocController2.default(scene.view, scene.ctrl), scene.tocCtrl.setThumbnails(scene.thumbnails), scene.tocCtrl.setSearch(scene.search), scene.ctrl.setTocCtrl(scene.tocCtrl), scene.view.addHandler(scene.tocCtrl), "pdf" === test.type && (scene.pdfLinksHandler = new _PdfLinksHandler2.default(test.src, scene.ctrl, scene.visual.element), scene.book.addEventListener("pdfAnnotation", scene.pdfLinksHandler.handleEvent.bind(scene.pdfLinksHandler)), test.src.getHandler(function(handler) {
@@ -2696,7 +2696,7 @@
                 this.state.lighting = Math.min(this.state.lighting + this.p.lighting.delta, this.p.lighting.max), this.visual.setExtraLighting(this.state.lighting), this.updateView()
             }, BookController.prototype.cmdLightingDown = function() {
                 this.state.lighting = Math.max(this.state.lighting - this.p.lighting.delta, this.p.lighting.min), this.visual.setExtraLighting(this.state.lighting), this.updateView()
-            }, BookController.prototype.goToPage = function(page) {
+            }, BookController.prototype.goToPage = function(page) { 
                 var _this6 = this;
                 this.p.rtl && (page = this.book.getPages() - 1 - page);
                 var pageNum = Math.max(Math.min(page, this.book.getPages() - 1), 0);
@@ -4344,7 +4344,7 @@
                 this.hide()
             }, TocController.prototype.navigateThumbnails = function(number) {
                 this.bookCtrl.goToPage(number)
-            }, TocController.prototype.navigateSearch = function(number) {
+            }, TocController.prototype.navigateSearch = function(number) { 
                 this.bookCtrl.goToPage(number)
             }, TocController.prototype.navigateBookmarks = function(item) {
                 var _this2 = this;
@@ -5704,7 +5704,13 @@
         }, EventsToActions.prototype.click = function(e) {
             this.clicks(e, "click")
         }, EventsToActions.prototype.dblclick = function(e) {
-            this.clicks(e, "dblclick")
+            /*var productList = document.querySelectorAll('.product__list .product__item');
+            console.log('productList: ', productList);*/ 
+            var page = e.target.getAttribute("page");
+            var code = e.target.getAttribute("code");
+            var book = e.target.getAttribute("book");
+            window.loadPagePDF(book, code, page);  
+            //this.clicks(e, "dblclick") //COMENTADO
         }, EventsToActions.prototype.touchPick = function(e, flags, touches) {
             this.touchPicked = _extends({}, EventsToActions.getPosition(touches), {
                 actions: this.getActions("touchdrag", touches.length, flags),
@@ -5746,7 +5752,7 @@
             this.key(e, "keydown")
         }, EventsToActions.prototype.keyPress = function(e) {
             this.key(e, "keypress")
-        }, EventsToActions.prototype.keyUp = function(e) {
+        }, EventsToActions.prototype.keyUp = function(e) { 
             this.key(e, "keyup")
         }, EventsToActions.prototype.dispose = function() {
             this.element.off("contextmenu", this.binds.contextMenu), this.element.off("mousedown", this.binds.mouseDown), this.element.off("mousemove", this.binds.mouseMove), this.element.off("mouseup", this.binds.mouseUp), this.element.off("mousewheel", this.binds.mouseWheel), (0, _libs.$)(this.doc).off("mousemove", this.binds.mouseMoveDoc), (0, _libs.$)(this.doc).off("mouseup", this.binds.mouseUpDoc), this.element.off("click", this.binds.click), this.element.off("dblclick", this.binds.dblclick), this.element.off("touchstart", this.binds.touchStart), this.element.off("touchmove", this.binds.touchMove), this.element.off("touchend", this.binds.touchEnd), (0, _libs.$)(this.wnd).off("keydown", this.binds.keyDown), (0, _libs.$)(this.wnd).off("keypress", this.binds.keyPress), (0, _libs.$)(this.wnd).off("keyup", this.binds.keyUp)

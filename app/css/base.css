@@ -248,4 +248,4 @@ div.letters.letters-2 {    font-size: 1.3rem;  margin: 2rem 0;   color: var(--eb
 .nav-evaluate-detail { border: initial;   border-radius: 0 0 .5rem .5rem;   color: white; }
 .commentEvaluate {  border-color: rgb(191, 191, 191); box-shadow: rgb(199, 199, 199) 0px 0px 3px; }
 
-.modal-dialog {  width: 40% !important;  min-width: 500px !important;  }
+.modal-dialog {  width: 50% !important;  min-width: 500px !important;  }

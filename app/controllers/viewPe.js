@@ -37,6 +37,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   $s.evaluation_log = []; 
   $s.scores_letters = [];
   $s.evaluation_rage = []; 
+  $s.user_type = '';
 
   $s.modeOpen = 1;
 
@@ -54,6 +55,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
 
       ses.check( function(datau){ 
         $s.sesdata = datau; 
+        console.log($s.sesdata);
         ses.getJoinStatus($s.class_code , function(r){
           if(r.data.response){
             if(r.data.result.joined == '1')
@@ -511,7 +513,14 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   $s.getFormActivity = function(activity){   
     //$("#activityModal").modal("show");
     $("#activityModal").addClass("modal fade d-flex").removeClass("d-none");
-    $("#activityModal").modal('show'); 
+    $("#activityModal").modal('show');  
+
+    $("#activityModal").on('shown.bs.modal', function (event) { 
+      timeout(function(){
+        $s.user_type = $s.sesdata.id_type;  
+      })
+    })
+
     $('#activityModal').on('hide.bs.modal', function (event) {
       $("#activityModal").removeClass("modal fade d-flex").addClass("d-none");
     })

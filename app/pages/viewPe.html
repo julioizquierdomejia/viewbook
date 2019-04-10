@@ -103,12 +103,15 @@
             </div>
 	      </div>
 	      <div class="modal-footer mf" ng-show="!isJoined"> 
-	      	<button type="button" class="btn btn-secondary btn_continue br-2" ng-show="activityProccess == 1 && activityOpen.time_band != 1" data-dismiss="modal">{{ gss.cancel }}</button>
+	      	<!-- <button type="button" class="btn btn-secondary btn_continue br-2" ng-show="activityProccess == 1 && activityOpen.time_band != 1" data-dismiss="modal">{{ gss.cancel }}</button>
 	        <button type="button" class="btn btn-raised btn-primary btn_continue br-2" ng-show="activityProccess == 1" ng-click="getDataQuestions()">{{ gss.continue }}</button>
 	        <button type="button" class="btn btn-raised btn-primary btn_send br-2" ng-show="step2Activity && form_2.teacher_mail.$valid && form_2.student_mail.$valid && activityProccess < 3 " ng-click="sendTask()">{{ gss.send_task }}</button>
 	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 4 || activityProccess == 5" ng-click="closeModalActivity()">{{ gss.read_continue }}</button>
-	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 5" ng-click="repeatActivity()">{{ gss.repeat_activity }}</button> 
-	      </div>
+	        <button type="button" class="btn btn-raised btn-info ml-1 mr-1 br-2" ng-show="activityProccess == 5" ng-click="repeatActivity()">{{ gss.repeat_activity }}</button> -->
+	        <small> {{ gss.msg_teacher_open_activity }}</small>
+	        <button type="button" class="ml-auto btn btn-secondary btn_continue br-2" data-dismiss="modal">{{ gss.read_continue }}</button>
+	      </div> 
+
 	      <div class="modal-footer mf" ng-show="isJoined"> 
 	      	<button type="button" class="btn btn-secondary btn_continue br-2" ng-show="activityOpen.time_band != 1 && (activityProccess != 4)" data-dismiss="modal">{{ gss.cancel }}</button>
 	      	<button type="button" class="btn btn-raised btn-primary btn_continue br-2" ng-show="activityProccess == 1" ng-click="getDataQuestions()">{{ gss.continue }}</button>

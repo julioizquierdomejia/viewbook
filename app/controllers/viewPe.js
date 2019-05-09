@@ -51,7 +51,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       var code = us.getPartUrl(2);  
       var numberunity = us.getPartUrl(3); 
       //var amb = us.getPartUrl(4); 
-      $s.class_code = us.getPartUrl(4); 
+      $s.class_code = us.getPartUrl(4);
 
       ses.check( function(datau){ 
         $s.sesdata = datau; 
@@ -312,14 +312,11 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
               if(doci.getElementById('ba_' + activity.id) !== null){
                 var element = doci.getElementById('ba_' + activity.id); 
                 element.parentNode.removeChild(element);
-              }
-              
+              } 
 
               var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1;';
               var b_class = $s.colors[dataButton.button_color].class;  
-              var b_icon = '<i class="'+dataButton.button_icon+'"></i>';
-
-
+              var b_icon = '<i class="'+dataButton.button_icon+'"></i>'; 
 
               if( $("#ba_"+dataButton.id).length == 0 )
                 htmlButton+='<button id="ba_'+dataButton.id+'" page="'+page+'" estatus_evaluate="'+dataButton.estatus_evaluate+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" title="'+dataButton.name+'" class="btn btn-activitys btn-activitys-'+page+' '+b_class+'" style="'+b_display+'"">'+ b_icon + dataButton.button_title+'</button>';
@@ -449,6 +446,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       $('#activityView').on('shown.bs.modal', function (event) {   
         $s.getFormActivityView(resource); 
         $s.activityView = resource;  
+
         if($s.activityView.estatus_evaluate == '0' || $s.activityView.estatus_evaluate == '1'){
           $s.averageData.class = 'wait';
           $s.averageData.class_color = 'text-dark';
@@ -643,7 +641,14 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
               var contcg = document.getElementsByClassName('field-' + value.code)[0]; 
               temp = contcg.getElementsByClassName(value.type)[0];
             } 
-          }else{
+          }else if(value.type == 'textarea'){ 
+            if( tinymce.get(value.code) === null ){
+              document.getElementById(value.code).disabled = true;
+            }else{ 
+              tinymce.get(value.code).setMode('readonly');
+            }
+            temp = document.getElementById(value.code);  
+         }else{
             document.getElementById(value.code).disabled = true;
             temp = document.getElementById(value.code);  
           }
@@ -658,15 +663,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       }else{
         $s.linkWrong();
       }        
-    }) 
-   /* timeout(function(){ 
-      $s.checkAverage(true);
-      var commentGeneral = document.getElementById("comments");
-      commentGeneral.addEventListener("keyup", $s.delayKb(function (e) {
-        $s.inChange = true;
-        $s.$apply();
-      }, 1000));
-    })*/
+    })  
   }
 
   $s.insertAfter = function(newNode, referenceNode, event) {
@@ -701,7 +698,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       divk.appendChild($s.createDivScoreNum(id, code, score));
     } 
 
-    divk.appendChild($s.createLabelNoteInput());
+    divk.appendChild($s.createLabelNoteInput( comment ));
     divk.appendChild($s.createNoteInput(comment));
     return { node: divk, id_select: id_select, score: score };
   }
@@ -745,10 +742,10 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       return sectorScoreNum;
   }
 
-  $s.createLabelNoteInput = function() { 
+  $s.createLabelNoteInput = function( comment ) { 
     var commentLabel = document.createElement("label"); 
-    commentLabel.setAttribute("class", "font-italic ml-2"); 
-    commentLabel.innerHTML = gss.comment + ':';
+    commentLabel.setAttribute("class", "font-italic ml-2");  
+    commentLabel.innerHTML = ( comment !== null && comment != "" ) ? gss.comment + ':' : '';
     return commentLabel;
   }  
 
@@ -1033,7 +1030,9 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           //value.value_correct = data;
           value.value = $s.generateJsonDragg(value.name); 
           $s.dataFormFinal.push(value);  
-      } 
+      }else {
+          $s.dataFormFinal.push(value);  
+      }
     });        
  
     if(vacio == true){

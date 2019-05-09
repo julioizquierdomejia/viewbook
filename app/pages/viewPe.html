@@ -147,7 +147,7 @@
 						<a class="nav-link font-weight-bold" href="docente" ng-class="averageData.class_color"> <i class="fas" ng-class="averageData.icon"></i> {{ gss.calification + ': ' + averageData.text }} </a>
 					</li>  
 					<li class="nav-item active">
-						<a class="nav-link text-success font-weight-bold bg-info br-1" href="docente" title="Ampliar detalle"> <i class="fas fa-expand-arrows-alt text-white"></i> </a>
+						<a class="nav-link text-success font-weight-bold bg-info br-1" ng-href="{{ gss.link_pe + '/actividad/' + class_info.amb + '/' + class_code + '/' + activityView.id + '/' + activityView.code  }}" target="_blank" title="Ampliar detalle"> <i class="fas fa-expand-arrows-alt text-white"></i> </a>
 					</li>  
 				</ul>
 			</nav>  

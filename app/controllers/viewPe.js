@@ -1,7 +1,7 @@
 window.konvasData = [];
 window.draggData = [];
 
-app.controller('viewPeController', ['$scope','globalSettingsService','utilService', '$timeout', 'activityService','$compile','sessionService', 'peConfigService', 'learningService', function($s, gss, us, timeout, acts, compile, ses, pcs, lns) {
+app.controller('viewPeController', ['$scope','globalSettingsService','utilService', '$timeout', 'activityService','$compile','sessionService', 'peConfigService', 'learningService', 'peDataService', function($s, gss, us, timeout, acts, compile, ses, pcs, lns, pds) {
   $s.gss = gss; 
   $s.us = us;
   
@@ -38,6 +38,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   $s.scores_letters = [];
   $s.evaluation_rage = []; 
   $s.user_type = '';
+  $s.amb = 'basepe';
 
   $s.modeOpen = 1;
 
@@ -51,11 +52,12 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       var code = us.getPartUrl(2);  
       var numberunity = us.getPartUrl(3); 
       //var amb = us.getPartUrl(4); 
-      $s.class_code = us.getPartUrl(4);
+      $s.class_code = us.getPartUrl(4); 
 
       ses.check( function(datau){ 
         $s.sesdata = datau; 
-        console.log($s.sesdata);
+        $s.amb = $s.sesdata.amb;
+        $s.user_type = $s.sesdata.id_type;   
         ses.getJoinStatus($s.class_code , function(r){
           if(r.data.response){
             if(r.data.result.joined == '1')
@@ -110,6 +112,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   $s.getBookAndUnity = function(code, numberunity){
     acts.getBookByCode(code, function(rb){ 
       $s.book = rb.data.result;   
+      $s.generateLink($s.book.id);
       $s.getDataClass();
       if($s.book.id !== undefined) {  
         acts.getUnitysByNumber($s.book.id, numberunity, function(ru){
@@ -139,13 +142,24 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     //us.toast(gss.link_bad,'i');
   }
 
+  $s.generateLink = function (id_book){ 
+    var link = 'libros/';
+    pds.generateTree(id_book, function(r){
+       $s.linkbook = link + '' + r.data.result.link;        
+    })
+  }  
+
   $s.initBook = function(pdfpath, pages_number){
     var real_pg = pages_number + 2;
+    var link_book = gss.link_pe + '/' + $s.linkbook + '/' + $s.amb + '/' + $s.class_code;
+
+    var link_class = (parseInt($s.user_type) == 1) ? gss.url_alumn : gss.url_teacher;
+    link_class = gss.link_pe + '/' + link_class + '/clase/' + $s.amb  + '/' +  $s.class_code;
 
     var html_end_demo = '<div class="back_demo"><img src="' + gss.path_bookcontent + $s.book.code+'/back_demo.jpg" />'+
-                          '<div class="text_end_demo">'+gss.text_end_demo+' <br><br>'+
-                            '<a class="btn btn-ebio" target="_blank" href="'+gss.link_pos+'">'+gss.text_link_pos+'</a>'+
-                            '<a class="btn btn-ebio" target="_blank" href="'+gss.link_pe+'">'+gss.text_link_pe+'</a>'+
+                          '<div class="text_end_demo display-4">'+gss.text_end_unity+' <br><br>'+
+                            '<a class="btn btn-ebio" target="_blank" href="'+link_book+'">'+gss.unity_change+'</a>'+
+                            '<a class="btn btn-ebio" target="_blank" href="'+link_class+'">'+gss.go_to_class+'</a>'+
                           '</div>'+
                         '</div>';
     timeout(function(){
@@ -175,24 +189,37 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           props.sheet.flexibility = 0;
           props.sheet.flexibility.bending = 1;
           props.cssLayersLoader = function(n, clb) {// n - page number   
-            clb([{
-              css: '',
-              html: $s.displayButtonsActivitys(n),
-              js: function (jContainer) { // jContainer - jQuery element that contains HTML Layer content
-                //console.log('init');
-                return { // set of callbacks 
-                  show: function() { 
-                    if(n == 0){
-                      var iframe = $('iframe').contents();    
-                      iframe.find(".inpPage").focus().blur();
-                    }  
-                  },
-                  shown: function() { 
-                    $s.eventosB(n);
-                  }
-                };
-              }
-            }]);
+            if(n == real_pg + 2){
+              clb([{  
+                html: html_end_demo,
+                js: function (jContainer) {
+                  return { 
+                    show: function() { 
+                      $s.changePage(n); 
+                    } 
+                  };
+                }
+              }]);
+            }else{
+              clb([{
+                css: '',
+                html: $s.displayButtonsActivitys(n),
+                js: function (jContainer) { // jContainer - jQuery element that contains HTML Layer content
+                  //console.log('init');
+                  return { // set of callbacks 
+                    show: function() { 
+                      if(n == 0){
+                        var iframe = $('iframe').contents();    
+                        iframe.find(".inpPage").focus().blur();
+                      }  
+                    },
+                    shown: function() { 
+                      $s.eventosB(n);
+                    }
+                  };
+                }
+              }]);
+            } 
           }; 
           return props;
         },
@@ -808,7 +835,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     } 
  
    
-    var pathUpload = gss.API + "/resource/activity/upload"; 
+    var pathUpload = '../../apibeta/public/resource/activity/upload';  
 
     var input = e.target;
     var files = e.target.files || e.dataTransfer.files;
@@ -821,7 +848,9 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     ajax.responseType = 'json';
     ajax.addEventListener("load", completeUpload, false);
     ajax.addEventListener("error", errorHandler, false);
-    ajax.open("POST", pathUpload);
+    ajax.open("POST", pathUpload );
+    ajax.setRequestHeader('Authorization', 'Bearer ' + ses.getToken());
+    ajax.setRequestHeader('Content-Type', 'application/json');
     ajax.send(formdata);
 
     function completeUpload(event) {

@@ -206,6 +206,7 @@ body {
 .modal-content .modal-header {  padding-top: 0; }
 img.thumb { height: 50px; }
 img.thumb-x2 { height: 100px; }
+img.thumb-x3 { height: 250px; }
 .head_style { background-position: right; background-repeat: no-repeat; background-size: contain; }
 .head_style_1 { background-color: #88b998; color: white; }
 .head_style_2 { background-color: #40c8f4; color: black; }

@@ -68,6 +68,7 @@
     <script type="text/javascript" src="../lib/services/sesion.js"></script> 
     <script type="text/javascript" src="../lib/services/localstorage.js"></script>  
     <script type="text/javascript" src="../lib/services/globalSettings.js"></script>
+    <script type="text/javascript" src="../lib/services/peData.js"></script>  
     <script type="text/javascript" src="../lib/services/learning.js"></script> 
     <script type="text/javascript" src="../lib/services/activity.js"></script>   
     <script type="text/javascript" src="../lib/services/util.js"></script>    

@@ -166,7 +166,7 @@
 	        	</div> 
 	        	<div class="col-12 mt-4">
                     <label>{{ gss.comment_general_evaluate + ':' }} </label>
-                    <div name="comments" id="comments" rows="3" ng-bind="questions_head.comment" class="w-100 p-2 commentEvaluate"></div>
+                    <div name="comments" id="comments" disabled rows="3" ng-bind="questions_head.comment" class="w-100 p-2 commentEvaluate"></div>
                     <div class="mt-2 font-italic">{{ gss.realized_at + ': ' + questions_head.date_resolved }} </div>
                     <div class="font-italic">{{ gss.evaluate_at + ': ' + questions_head.date_scored }} </div>
                 </div>
@@ -197,9 +197,9 @@
                 <div class="row d-flex justify-content-center">
                   <div class="col-4 d-flex flex-wrap justify-content-center item-temp-upload" ng-repeat="pic in resourceOpen.files">
                     <div class="col-12 d-flex justify-content-center align-items-center flex-wrap">
-                      <img ng-if="isImage(pic.filename)" ng-src="{{ gss.path_pecontent_upload + pic.folder + '/' + pic.filename }}" class="thumb-x2 mx-2">
-                      <img ng-if="isVideo(pic.filename) || isAudio(pic.filename)" ng-src="{{ gss.path_webcontent + 'play_icon_blue.png' }}" class="thumb-x2 mx-2">
-                      <img ng-if="!isVideo(pic.filename) && !isImage(pic.filename)" ng-src="{{ gss.path_webcontent + 'document_icon_blue.png' }}" class="thumb-x2 mx-2">
+                      <img ng-if="isImage(pic.filename)" ng-src="{{ gss.path_pecontent_upload + pic.folder + '/' + pic.filename }}" class="thumb-x3 mx-2">
+                      <img ng-if="isVideo(pic.filename) || isAudio(pic.filename)" ng-src="{{ gss.path_webcontent + 'play_icon_blue.png' }}" class="thumb-x3 mx-2">
+                      <img ng-if="!isVideo(pic.filename) && !isImage(pic.filename)" ng-src="{{ gss.path_webcontent + 'document_icon_blue.png' }}" class="thumb-x3 mx-2">
                     </div>
                     <small class="w-100 text-center">{{ pic.name }}</small>
                     <a ng-href="{{ gss.path_pecontent_upload + pic.folder + '/' + pic.filename }}" download class="btn btn-ebio br-2" >{{ gss.download }}</a>

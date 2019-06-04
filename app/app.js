@@ -1,4 +1,9 @@
-app = angular.module('view_ebio', ['ngRoute','ngAnimate','toastr','timer']).constant('API_URL', "../../apibeta/public");
+var env = {};
+if(window){ Object.assign(env, window.__env); }
+
+app = angular.module('view_ebio', ['ngRoute','ngAnimate','toastr','timer']);
+
+app.constant('__env', env);
 
 app.run(function($rootScope, $location, $log, utilService){
 	$rootScope.$on('$locationChangeSuccess', function (event, toState, toParams) {

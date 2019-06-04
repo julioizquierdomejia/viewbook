@@ -20,7 +20,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   $s.resourceOpen = {};
   $s.step2Activity = false;
   $s.data_send = {};
-  $s.dataFormFinal = [];
+  $s.dataFormFinal = [];1
   $s.pageActivityOpen = 0;
   $s.activityProccess = 0;
   $s.timerRunning = false;
@@ -109,9 +109,9 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     })
   }
 
-  $s.getBookAndUnity = function(code, numberunity){
+  $s.getBookAndUnity = function(code, numberunity){ 
     acts.getBookByCode(code, function(rb){ 
-      $s.book = rb.data.result;   
+      $s.book = rb.data.result;    
       $s.generateLink($s.book.id);
       $s.getDataClass();
       if($s.book.id !== undefined) {  

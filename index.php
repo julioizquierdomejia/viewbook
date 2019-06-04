@@ -24,7 +24,7 @@
 <body ng-app="view_ebio" ng-controller="baseController" ng-init="init_controller()"> 
     <div id="sectorBase" ng-view> 
     </div> 
-
+    <script type="text/javascript" src="app/config/env.js"></script>
     <script src="app/js/jquery.min.js"></script>
 
     <script type="text/javascript" src="../lib/jquery/ui/jquery-ui.min.js"></script>

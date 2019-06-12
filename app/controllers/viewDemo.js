@@ -23,8 +23,7 @@ app.controller('viewDemoController', ['$scope','globalSettingsService','utilServ
     acts.getBookByCode(code, function(rb){ 
       $s.book = rb.data.result;   
       if($s.book.id !== undefined) { 
-        acts.getUnitysByNumber($s.book.id, numberunity, function(ru){ 
-          alert(numberunity);
+        acts.getUnitysByNumber($s.book.id, numberunity, function(ru){  
           $s.unity = ru.data.result; 
           if($s.unity.id !== undefined) { 
             var pages_number = $s.unity.end_page - $s.unity.start_page;  

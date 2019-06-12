@@ -13,7 +13,7 @@ app.controller('viewDemoController', ['$scope','globalSettingsService','utilServ
       //$s.espacioAzulado();
       var code = us.getPartUrl(2);  
       var name = us.getPartUrl(3); 
-      var numberunity = us.getPartUrl(3); 
+      var numberunity = ( us.getPartUrl(4) === undefined ) ? 1 : us.getPartUrl(4); 
       $s.getBookAndUnity(code, numberunity);   
       $s.sumaPageAdd
  
@@ -23,7 +23,8 @@ app.controller('viewDemoController', ['$scope','globalSettingsService','utilServ
     acts.getBookByCode(code, function(rb){ 
       $s.book = rb.data.result;   
       if($s.book.id !== undefined) { 
-        acts.getUnitysByNumber($s.book.id, numberunity, function(ru){
+        acts.getUnitysByNumber($s.book.id, numberunity, function(ru){ 
+          alert(numberunity);
           $s.unity = ru.data.result; 
           if($s.unity.id !== undefined) { 
             var pages_number = $s.unity.end_page - $s.unity.start_page;  

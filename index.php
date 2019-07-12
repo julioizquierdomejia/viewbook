@@ -51,6 +51,7 @@
     <script type="text/javascript" src="../lib/timer/humanize-duration.js"></script>  
     <script type="text/javascript" src="../lib/tinymce/tinymce.min.js"></script>
     <script type="text/javascript" src="../lib/tinymce/langs/es.js"></script>
+    <script type="text/javascript" src="../lib/videosharing/ng-videosharing-embed.min.js"></script>
 
     <script type="text/javascript" src="../lib/formbuilder/form-builder.min.js"></script>
     <script type="text/javascript" src="../lib/formbuilder/form-render.min.js"></script>

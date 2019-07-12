@@ -237,6 +237,13 @@
               <div class="col-12" ng-show="resourceOpen.type == 7">
                 <video id="videoPreviewUploadModal" controls class="videoVideo"></video>
               </div>
+              <div class="col-12" ng-show="resourceOpen.type == 8">
+                <div class="containerVideoOnlinePreview">
+		           <embed-video  ng-if="resourceOpen.type == 8" data-ng-href="{{ resourceOpen.url }}" force-protocol="https" controls=0>
+		             <a ng-href="{{ resourceOpen.url }}">Ver</a>
+		           </embed-video>
+		        </div>
+              </div> 
               <div class="col-12" ng-show="resourceOpen.text_extra != ''">
                 <div class="p-3" ng-bind-html="resourceOpen.text_extra | trust">
                 </div>

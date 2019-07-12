@@ -276,7 +276,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   $s.isPlayingTTS = false;
   window.theSynth;
   window.utterThis;
-  
+
   $s.playTTS = function(page, button){
     window.theSynth = window.speechSynthesis || window.webkitSpeechSynthesis; 
     page = parseInt(button.getAttribute("page"));
@@ -383,6 +383,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
                     htmlButton+='<div id="ba_'+dataButton.id+'" page="'+page+'" eventTrigger="'+dataButton.value+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" class="areaTTS btn-activitys-'+page+' " style="'+b_display+'""></div>';
                 
               }else{
+                console.log(dataButton);
                 if( dataButton.link_book == 1 ) {
                   var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1;';
                   var b_class = $s.colors[dataButton.button_color].class;  

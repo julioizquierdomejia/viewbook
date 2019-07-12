@@ -1,7 +1,7 @@
 var env = {};
 if(window){ Object.assign(env, window.__env); }
 
-app = angular.module('view_ebio', ['ngRoute','ngAnimate','toastr','timer']);
+app = angular.module('view_ebio', ['ngRoute','ngAnimate','toastr','timer','videosharing-embed']);
 
 app.constant('__env', env);
 

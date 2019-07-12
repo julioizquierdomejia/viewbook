@@ -11,7 +11,7 @@
     <base href="/viewbook/">      
     <link rel="stylesheet" href="../lib/mdb/bootstrap-material-design.min.css">
     <link rel="stylesheet" href="../lib/toastr/angular-toastr.min.css"> 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous"> -->
     <link rel="stylesheet" type="text/css" media="screen" href="../lib/formbuilder/jquery.rateyo.min.css">
     <link type="text/css" rel="stylesheet" href="app/css/animBall.css"></link> 
     <link type="text/css" rel="stylesheet" href="../lib/circlecss/circle.css"></link> 
@@ -25,6 +25,7 @@
     <div id="sectorBase" ng-view> 
     </div> 
     <script type="text/javascript" src="app/config/env.js"></script>
+    <script src="https://kit.fontawesome.com/75c53eafaf.js"></script>
     <script src="app/js/jquery.min.js"></script>
 
     <script type="text/javascript" src="../lib/jquery/ui/jquery-ui.min.js"></script>

@@ -252,15 +252,50 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     var statusev = 0;
     if(buttonsA.length > 0){
       [].forEach.call(buttonsA, theButton => {   
-        statusev = parseInt(theButton.getAttribute("estatus_evaluate"));   
-        if(statusev == 0){ 
-          theButton.addEventListener('click', () => { $s.showActivity(page, theButton); } )
-        }else {  
-          theButton.addEventListener('click', () => { $s.showActivityMade(page, theButton, statusev); } )
-        }
-        
+        statusev = parseInt(theButton.getAttribute("estatus_evaluate"));  
+        console.log("Element", theButton);
+
+        if( parseInt(theButton.getAttribute("type") ) == 10 ){ 
+          typeEvent = parseInt( theButton.getAttribute("eventTrigger") ); 
+          if(typeEvent == 1){
+            theButton.addEventListener('mouseover', () => { $s.playTTS(page, theButton); } ) 
+          }else{
+            theButton.addEventListener('click', () => { $s.playTTS(page, theButton); } )
+          } 
+        }else{
+          if(statusev == 0){  
+            theButton.addEventListener('click', () => { $s.showActivity(page, theButton); } )
+          }else {  
+            theButton.addEventListener('click', () => { $s.showActivityMade(page, theButton, statusev); } )
+          }
+        } 
       });
     }   
+  }
+
+  $s.isPlayingTTS = false;
+  window.theSynth;
+  window.utterThis;
+  
+  $s.playTTS = function(page, button){
+    window.theSynth = window.speechSynthesis || window.webkitSpeechSynthesis; 
+    page = parseInt(button.getAttribute("page"));
+    ida = parseInt(button.getAttribute("ida")); 
+
+    angular.forEach($s.activitysByPage[page], function(resource, key) { 
+      if(resource.id == ida){
+        $s.resourceTTS = resource;  
+        window.theSynth.cancel();
+        window.utterThis = new SpeechSynthesisUtterance( $s.resourceTTS.text_extra );
+        window.utterThis.addEventListener('start', function(event) { 
+          $s.isPlayingTTS = true;
+        });
+        window.utterThis.addEventListener('end', function(event) { 
+          $s.isPlayingTTS = false;
+        });
+        window.theSynth.speak(window.utterThis);
+      }
+    })
   }
 
 
@@ -340,14 +375,25 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
                 var element = doci.getElementById('ba_' + activity.id); 
                 element.parentNode.removeChild(element);
               } 
+ 
+              if( dataButton.type == "10" ){
+                var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1; width: ' + dataButton.width + '%; height: ' + dataButton.height + '%; ';
+                          
+                if( $("#ba_"+dataButton.id).length == 0 )
+                    htmlButton+='<div id="ba_'+dataButton.id+'" page="'+page+'" eventTrigger="'+dataButton.value+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" class="areaTTS btn-activitys-'+page+' " style="'+b_display+'""></div>';
+                
+              }else{
+                if( dataButton.link_book == 1 ) {
+                  var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1;';
+                  var b_class = $s.colors[dataButton.button_color].class;  
+                  var b_icon = '<i class="'+dataButton.button_icon+'"></i>'; 
 
-              var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1;';
-              var b_class = $s.colors[dataButton.button_color].class;  
-              var b_icon = '<i class="'+dataButton.button_icon+'"></i>'; 
+                  if( $("#ba_"+dataButton.id).length == 0 )
+                    htmlButton+='<button id="ba_'+dataButton.id+'" page="'+page+'" estatus_evaluate="'+dataButton.estatus_evaluate+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" title="'+dataButton.name+'" class="btn btn-activitys btn-activitys-'+page+' '+b_class+'" style="'+b_display+'"">'+ b_icon + dataButton.button_title+'</button>';
+                
+                }
+              } 
 
-              if( $("#ba_"+dataButton.id).length == 0 )
-                htmlButton+='<button id="ba_'+dataButton.id+'" page="'+page+'" estatus_evaluate="'+dataButton.estatus_evaluate+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" title="'+dataButton.name+'" class="btn btn-activitys btn-activitys-'+page+' '+b_class+'" style="'+b_display+'"">'+ b_icon + dataButton.button_title+'</button>';
-            
             });    
           } 
         }
@@ -387,7 +433,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
  
 
 
-      if(dataButton.estatus_evaluate == '0'){ 
+      if(dataButton.estatus_evaluate == '0'){         
         theButton.addEventListener('click', () => { $s.showActivity(dataButton.page, theButton); } )
       }else {  
         theButton.addEventListener('click', () => { $s.showActivityMade(dataButton.page, theButton, dataButton.estatus_evaluate); } )
@@ -444,7 +490,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           $s.dataActivityTemp = { 'page': page, 'key': key };
           $s.getFormActivity(resource);
           $s.init_activity(page);
-        }else if(type == 3 || type == 4 || type == 5){
+        }else if(type == 3 || type == 4 || type == 5 || type == 6 || type == 7 || type == 8){
           $s.showResource(resource); 
         } 
       }
@@ -527,12 +573,71 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     $s.resourceOpen = resource; 
     timeout(function(){ 
       $("#resourceModal").addClass("modal fade d-flex").removeClass("d-none");
-      $("#resourceModal").modal('show'); 
+      $("#resourceModal").modal('show');  
+
+      console.log(resource); 
+      
+        $('#resourceModal').modal().on('shown.bs.modal', function (e) { 
+          console.log(resource);
+          if($s.resourceOpen.type == "6"){
+            var coverAudioModal = '';
+            var audioModal = '';
+            if( $s.isAudio( resource.files[0].filename ) ){
+              coverAudioModal = gss.path_pecontent_upload + resource.files[1].folder + '/' + resource.files[1].filename; 
+              audioModal = gss.path_pecontent_upload + resource.files[0].folder + '/' + resource.files[0].filename; 
+            }else{
+              coverAudioModal = gss.path_pecontent_upload + resource.files[0].folder + '/' + resource.files[0].filename; 
+              audioModal = gss.path_pecontent_upload + resource.files[1].folder + '/' + resource.files[1].filename; 
+            } 
+            document.getElementById("coverPreviewUploadModal").setAttribute('src', coverAudioModal); 
+            aud = document.getElementById("audioPreviewUploadModal");
+            aud.setAttribute('src', audioModal); 
+            $s.playAudio();
+            aud.ontimeupdate = function(){
+              $('.progressAudio').css('width', aud.currentTime / aud.duration * 100 + '%')
+            }
+          }
+
+          if($s.resourceOpen.type == "7"){ 
+            var videoModal = gss.path_pecontent_upload + resource.files[0].folder + '/' + resource.files[0].filename; 
+            document.getElementById("videoPreviewUploadModal").setAttribute('src', videoModal); 
+            document.getElementById("videoPreviewUploadModal").play(); 
+          }
+
+          if($s.resourceOpen.type == "10"){ 
+            alert("TTS"); 
+          }
+
+      }) 
+      
 
       $('#resourceModal').on('hide.bs.modal', function (event) {
         $("#resourceModal").removeClass("modal fade d-flex").addClass("d-none");
+        if($s.resourceOpen.type == "6"){
+          document.getElementById("audioPreviewUploadModal").pause();
+        }
+        if($s.resourceOpen.type == "7"){
+          document.getElementById("videoPreviewUploadModal").pause();
+        }
+        if($s.resourceOpen.type == "10"){ 
+            alert("Off TTS"); 
+        }
+
       })
+
     }) 
+  }
+ 
+  $s.playAudio = function(){
+    document.getElementById('audioPreviewUploadModal').play();
+    document.getElementById('btnPlayAudio').style.display = 'none';
+    document.getElementById('btnPauseAudio').style.display = 'block'; 
+  }
+
+  $s.pauseAudio = function(){
+    document.getElementById('audioPreviewUploadModal').pause();
+    document.getElementById('btnPauseAudio').style.display = 'none';
+    document.getElementById('btnPlayAudio').style.display = 'block'; 
   }
 
   $s.getFormActivity = function(activity){   
@@ -1350,7 +1455,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   }
 
   $s.isVideo = function(filename){
-    var allowedExtensions = /(\.mp4|\.mkv|\.avi|\.3gp|\.wmv)$/i;
+    var allowedExtensions = /(\.mp4)$/i;
     if(!allowedExtensions.exec(filename)){
         return false;
     }else{
@@ -1359,7 +1464,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
   }
 
   $s.isAudio = function(filename){
-    var allowedExtensions = /(\.mp3|\.wav|\.ogg|\.aac)$/i;
+    var allowedExtensions = /(\.mp3)$/i;
     if(!allowedExtensions.exec(filename)){
         return false;
     }else{

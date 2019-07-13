@@ -576,19 +576,20 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       $("#resourceModal").addClass("modal fade d-flex").removeClass("d-none");
       $("#resourceModal").modal('show');  
 
-      console.log(resource); 
+      //console.log(resource); 
       
         $('#resourceModal').modal().on('shown.bs.modal', function (e) { 
-          console.log(resource);
+          //console.log(resource);
           if($s.resourceOpen.type == "6"){
             var coverAudioModal = '';
             var audioModal = '';
-            if( $s.isAudio( resource.files[0].filename ) ){
-              coverAudioModal = gss.path_pecontent_upload + resource.files[1].folder + '/' + resource.files[1].filename; 
-              audioModal = gss.path_pecontent_upload + resource.files[0].folder + '/' + resource.files[0].filename; 
+            console.log($s.resourceOpen);
+            if( $s.isAudio( $s.resourceOpen.files[0].filename ) ){
+              coverAudioModal = gss.path_pecontent_upload + $s.resourceOpen.files[1].folder + '/' + $s.resourceOpen.files[1].filename; 
+              audioModal = gss.path_pecontent_upload + $s.resourceOpen.files[0].folder + '/' + $s.resourceOpen.files[0].filename; 
             }else{
-              coverAudioModal = gss.path_pecontent_upload + resource.files[0].folder + '/' + resource.files[0].filename; 
-              audioModal = gss.path_pecontent_upload + resource.files[1].folder + '/' + resource.files[1].filename; 
+              coverAudioModal = gss.path_pecontent_upload + $s.resourceOpen.files[0].folder + '/' + $s.resourceOpen.files[0].filename; 
+              audioModal = gss.path_pecontent_upload + $s.resourceOpen.files[1].folder + '/' + $s.resourceOpen.files[1].filename; 
             } 
             document.getElementById("coverPreviewUploadModal").setAttribute('src', coverAudioModal); 
             aud = document.getElementById("audioPreviewUploadModal");
@@ -600,7 +601,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           }
 
           if($s.resourceOpen.type == "7"){ 
-            var videoModal = gss.path_pecontent_upload + resource.files[0].folder + '/' + resource.files[0].filename; 
+            var videoModal = gss.path_pecontent_upload + $s.resourceOpen.files[0].folder + '/' + $s.resourceOpen.files[0].filename; 
             document.getElementById("videoPreviewUploadModal").setAttribute('src', videoModal); 
             document.getElementById("videoPreviewUploadModal").play(); 
           }

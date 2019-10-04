@@ -262,7 +262,14 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           }else{
             theButton.addEventListener('click', () => { $s.playTTS(page, theButton); } )
           } 
-        }else{
+        }else if( parseInt(theButton.getAttribute("type") ) == 11 ){ 
+          typeEvent = parseInt( theButton.getAttribute("eventTrigger") ); 
+          if(typeEvent == 1){
+            theButton.addEventListener('mouseover', () => { $s.playAudioOver(page, theButton); } ) 
+          }else{
+            theButton.addEventListener('click', () => { $s.playAudioOver(page, theButton); } )
+          } 
+        } else {
           if(statusev == 0){  
             theButton.addEventListener('click', () => { $s.showActivity(page, theButton); } )
           }else {  
@@ -282,6 +289,8 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
     page = parseInt(button.getAttribute("page"));
     ida = parseInt(button.getAttribute("ida")); 
 
+    $s.stopAudioPlaying(); 
+
     angular.forEach($s.activitysByPage[page], function(resource, key) { 
       if(resource.id == ida){
         $s.resourceTTS = resource;  
@@ -289,13 +298,64 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
         window.utterThis = new SpeechSynthesisUtterance( $s.resourceTTS.text_extra );
         window.utterThis.addEventListener('start', function(event) { 
           $s.isPlayingTTS = true;
+          $s.ledAudioPlaying();
         });
         window.utterThis.addEventListener('end', function(event) { 
           $s.isPlayingTTS = false;
+          $s.stopAudioPlaying(); 
         });
         window.theSynth.speak(window.utterThis);
       }
     })
+  }
+
+  $s.playAudioOver = function(page, button){ 
+    page = parseInt(button.getAttribute("page"));
+    ida = parseInt(button.getAttribute("ida"));  
+    var context = new AudioContext(); 
+    var theBuffer;
+ 
+    function playAudioUrl(audioBuffer) {
+      window.playingAudioOver = context.createBufferSource();
+      playingAudioOver.buffer = audioBuffer;
+      playingAudioOver.connect(context.destination);
+      playingAudioOver.start();
+      playingAudioOver.onended = function(){
+        $s.stopAudioPlaying(); 
+      };
+    }
+
+    $s.stopAudioPlaying(); 
+
+    angular.forEach($s.activitysByPage[page], function(resource, key) { 
+      if(resource.id == ida){
+        $s.resourceAudioOver = resource;
+        console.log($s.resourceAudioOver);
+        URL = gss.path_pecontent_upload + $s.resourceAudioOver.files[0].folder + '/' + $s.resourceAudioOver.files[0].filename;
+        window.fetch(URL)
+        .then(response => response.arrayBuffer())
+        .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
+        .then(audioBuffer => {
+          theBuffer = audioBuffer;
+          playAudioUrl(theBuffer);
+          $s.ledAudioPlaying();
+        });
+      }
+    })
+  }
+
+  $s.ledAudioPlaying = function(){
+    document.getElementById("playingAudioLed").style.opacity = 1;
+  }
+
+  $s.stopAudioPlaying = function(){
+    document.getElementById("playingAudioLed").style.opacity = 0;
+    if(window.theSynth !== undefined){
+      window.theSynth.cancel();
+    }
+    if(window.playingAudioOver !== undefined){
+      window.playingAudioOver.stop();
+    }
   }
 
 
@@ -377,6 +437,12 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
               } 
  
               if( dataButton.type == "10" ){
+                var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1; width: ' + dataButton.width + '%; height: ' + dataButton.height + '%; ';
+                          
+                if( $("#ba_"+dataButton.id).length == 0 )
+                    htmlButton+='<div id="ba_'+dataButton.id+'" page="'+page+'" eventTrigger="'+dataButton.value+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" class="areaTTS btn-activitys-'+page+' " style="'+b_display+'""></div>';
+                
+              }else if( dataButton.type == "11" ){
                 var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1; width: ' + dataButton.width + '%; height: ' + dataButton.height + '%; ';
                           
                 if( $("#ba_"+dataButton.id).length == 0 )
@@ -580,6 +646,9 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       
         $('#resourceModal').modal().on('shown.bs.modal', function (e) { 
           //console.log(resource);
+
+          $s.stopAudioPlaying(); 
+
           if($s.resourceOpen.type == "6"){
             var coverAudioModal = '';
             var audioModal = '';
@@ -604,11 +673,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
             var videoModal = gss.path_pecontent_upload + $s.resourceOpen.files[0].folder + '/' + $s.resourceOpen.files[0].filename; 
             document.getElementById("videoPreviewUploadModal").setAttribute('src', videoModal); 
             document.getElementById("videoPreviewUploadModal").play(); 
-          }
-
-          if($s.resourceOpen.type == "10"){ 
-            alert("TTS"); 
-          }
+          } 
 
       }) 
       

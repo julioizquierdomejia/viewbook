@@ -215,7 +215,7 @@ img.thumb-x3 { height: 250px; }
 .head_style_5 { background-color: #bf3d3d; color: white; }
 .head_style_6 { background-color: #04525a; color: white; }
 
-.blink_resources { opacity:0; transition: .5s linear; position: absolute; left: .5rem;  bottom: 0rem; cursor: pointer; z-index: 2; }
+.blink_resources, .playingAudioLed { opacity:0; transition: .5s linear; position: absolute; left: .5rem;  bottom: 0rem; cursor: pointer; z-index: 2; }
 #blink_resources_r {  right: .5rem; left: initial; }
 
 #timewrapper { position: absolute; right: 0rem; top: 0rem; z-index: 9999; }

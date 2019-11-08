@@ -430,30 +430,33 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
             //document.getElementById("blink_resources_l").style.opacity = 1; 
             angular.forEach($s.activitysByPage[page], function(activity, key) {  
               var dataButton = activity;  
+              console.log(activity);
               
               if(doci.getElementById('ba_' + activity.id) !== null){
                 var element = doci.getElementById('ba_' + activity.id); 
                 element.parentNode.removeChild(element);
               } 
  
-              if( dataButton.type == "10" ){
+              if( parseInt(dataButton.type) == 10 ){
                 var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1; width: ' + dataButton.width + '%; height: ' + dataButton.height + '%; ';
                           
                 if( $("#ba_"+dataButton.id).length == 0 )
                     htmlButton+='<div id="ba_'+dataButton.id+'" page="'+page+'" eventTrigger="'+dataButton.value+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" class="areaTTS btn-activitys-'+page+' " style="'+b_display+'""></div>';
                 
-              }else if( dataButton.type == "11" ){
+              }else if( parseInt(dataButton.type) == 11 ){
                 var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1; width: ' + dataButton.width + '%; height: ' + dataButton.height + '%; ';
                           
                 if( $("#ba_"+dataButton.id).length == 0 )
                     htmlButton+='<div id="ba_'+dataButton.id+'" page="'+page+'" eventTrigger="'+dataButton.value+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" class="areaTTS btn-activitys-'+page+' " style="'+b_display+'""></div>';
                 
               }else{
-                console.log(dataButton);
+                //console.log(dataButton);
                 if( dataButton.link_book == 1 ) {
                   var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1;';
                   var b_class = $s.colors[dataButton.button_color].class;  
                   var b_icon = '<i class="'+dataButton.button_icon+'"></i>'; 
+
+                  console.log( $("#ba_"+dataButton.id).length );
 
                   if( $("#ba_"+dataButton.id).length == 0 )
                     htmlButton+='<button id="ba_'+dataButton.id+'" page="'+page+'" estatus_evaluate="'+dataButton.estatus_evaluate+'" type="'+dataButton.type+'" code="'+dataButton.code+'" ida="'+dataButton.id+'" title="'+dataButton.name+'" class="btn btn-activitys btn-activitys-'+page+' '+b_class+'" style="'+b_display+'"">'+ b_icon + dataButton.button_title+'</button>';
@@ -461,9 +464,13 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
                 }
               } 
 
+              console.log(page, htmlButton);
+
             });    
           } 
         }
+
+        //console.log(htmlButton);
 
         return fondoBack + htmlButton;      
   }

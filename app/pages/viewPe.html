@@ -18,10 +18,10 @@
 	    <div class="modal-content modal-content-activity br-1">
 	      <div class="modal-header"> 
 	      	<div class="modal-title fz1p5r p-2 w-100 {{ colors_style_head[activityOpen.head_style].class }} head_style" style="{{ 'background-image: url('+gss.path_head_imgs + activityOpen.head_img_path +')' }}"> 
-	      	{{ activityOpen.name }} </div>  
+	      	{{ activityOpen.name }} </div>   
+	        <small class="px-2">{{ activityOpen.description }}</small>  
 	      </div>
 	      <div class="modal-body">
-	        <small>{{ activityOpen.description }}</small>  
 	        <div class="container-fluid">
 	        	<div class="row" id="data_send" ng-show="activityProccess == 0.5">
 					<div class="col-12">

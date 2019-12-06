@@ -1011,41 +1011,51 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
       arearesult.classList.add("w-100");
       arearesult.classList.add("text-center"); 
       document.querySelector('.field-' + nameField).append(arearesult); 
-    } 
- 
+    }  
    
-    var pathUpload = '../../apibeta/public/resource/activity/upload';  
+    var pathUpload = '../../apibeta/public/resource/activity/upload';    
 
     var input = e.target;
     var files = e.target.files || e.dataTransfer.files;
+    
     var areamsj = document.getElementById('msj-'+ nameField);
-    areamsj.innerHTML = 'Subiendo ...';
-    var formdata = new FormData();
-    formdata.append('file', files[0]);
-    formdata.append('nameField', nameField);
-    var ajax = new XMLHttpRequest();
-    ajax.responseType = 'json';
-    ajax.addEventListener("load", completeUpload, false);
-    ajax.addEventListener("error", errorHandler, false);
-    ajax.open("POST", pathUpload );
-    ajax.setRequestHeader('Authorization', 'Bearer ' + ses.getToken());
-    ajax.setRequestHeader('Content-Type', 'application/json');
-    ajax.send(formdata);
+    areamsj.innerHTML = gss.msg_upload_process;
 
     function completeUpload(event) {
       var resp = event.target.response;
-      var msj = areamsj;
-      if(resp.response){
-        msj.innerHTML = '<span class="text-primary">Arcvhivo subido</div>';  
-      }else{
-        msj.innerHTML = '<span class="text-danger">Error subiendo archivo</div>';
-      }
+     
     }  
 
-    function errorHandler(event) {
-     console.log('error');
-    }
+    $s.getBase64(files[0]).then(
+      function(data64){
+        var data = {
+          file: data64,
+          activity: $s.activityOpen,
+          filename: files[0].name,
+          nameField: nameField
+        };
+        acts.attachFileActivityStudent(data, function(r){
+            var msj = areamsj;
+            if(r.data.response){
+              msj.innerHTML = '<span class="text-primary">' + gss.msg_upload_success + '</div>';  
+            }else{
+              msj.innerHTML = '<span class="text-danger">' + gss.msg_upload_error + '</div>';
+            }
+        })
+      } 
+    );
   }
+
+  $s.getBase64 = function(file) {
+    return new Promise(function(resolve, reject) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+ 
 
   $s.getJsonDragg = function(name){  
     return window.draggData[name];
@@ -1238,7 +1248,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           //value.value_correct = data;
           value.value = $s.generateJsonDragg(value.name); 
           $s.dataFormFinal.push(value);  
-      }else {
+      } else {
           $s.dataFormFinal.push(value);  
       }
     });        
@@ -1643,10 +1653,14 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
         };
       }, 
       dragg: function(fieldData) {
+        console.log(fieldData);
         return {
           field: '<div id="'+fieldData.name+'">',
           onRender: function() { 
             var json_actual = $s.getJsonDragg(fieldData.name); 
+
+            console.log(json_actual);
+            
             var name = fieldData.name; 
 
               

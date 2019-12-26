@@ -65,6 +65,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
             else
               $s.isJoined = false;
           }else{
+            alert(4);
             $s.linkWrong();
           }
           $s.getBookAndUnity(code, numberunity);  
@@ -119,6 +120,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           $s.unity = ru.data.result; 
           if($s.unity === false){ 
             //us.irAnimFullColor('404','blue');
+            alert(1);
              $s.linkWrong();
           }else{
             var pages_number = $s.unity.end_page - $s.unity.start_page;  
@@ -132,6 +134,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
         })
       }
       else{
+        alert(2);
         $s.linkWrong();
       }
     })  
@@ -867,6 +870,7 @@ app.controller('viewPeController', ['$scope','globalSettingsService','utilServic
           });
         });  
       }else{
+        alert(3);
         $s.linkWrong();
       }        
     })  

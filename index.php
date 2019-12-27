@@ -20,8 +20,8 @@
     <link type="text/css" rel="stylesheet" href="../lib/formbuilder/css/dragg.css"></link>
     <link rel="stylesheet" href="../lib/hovercss/hover.min.css">  
     <link rel="stylesheet" type="text/css" href="app/css/base.css">
-</head>   
-<body ng-app="view_ebio" ng-controller="baseController" ng-init="init_controller()"> 
+  </head>   
+  <body ng-app="view_ebio" ng-controller="baseController" ng-init="init_controller()"> 
     <div id="sectorBase" ng-view> 
     </div> 
     <script type="text/javascript" src="app/config/env.js"></script>
@@ -50,8 +50,8 @@
     <script type="text/javascript" src="../lib/timer/angular-timer.min.js"></script> 
     <script type="text/javascript" src="../lib/timer/humanize-duration.js"></script>  
     <script type="text/javascript" src="../lib/tinymce/tinymce.min.js"></script>
-    <script type="text/javascript" src="../lib/tinymce/langs/es.js"></script>
-    <script type="text/javascript" src="../lib/videosharing/ng-videosharing-embed.min.js"></script>
+    <script type="text/javascript" src="../lib/tinymce/langs/es.js"></script> 
+  <!--  <script type="text/javascript" src="../lib/videosharing/ng-videosharing-embed.min.js"></script> -->
 
     <script type="text/javascript" src="../lib/formbuilder/form-builder.min.js"></script>
     <script type="text/javascript" src="../lib/formbuilder/form-render.min.js"></script>
@@ -60,6 +60,7 @@
     <script type="text/javascript" src="../lib/formbuilder/control_plugins/dragg.js"></script>
 
     <script type="text/javascript" src="app/app.js"></script>
+    <script type="text/javascript" src="../lib/videosharing/ng-videosharing-embed.min.js"></script>
 
     <!-- controllers -->
     <script type="text/javascript" src="app/controllers/base.js"></script>

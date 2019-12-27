@@ -130,18 +130,10 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
           //console.log($s.unity);
           if ($s.unity === false) {
             //us.irAnimFullColor('404','blue');
-<<<<<<< HEAD
-            alert(1);
-             $s.linkWrong();
-          }else{
-            var pages_number = $s.unity.end_page - $s.unity.start_page;  
-            var pdfpath = '../../../../lib/media/content/books/'+$s.book.code+'/unidad' + $s.unity.number + '.pdf';  
-=======
             $s.linkWrong('getUnitysByNumber');
           } else {
             var pages_number = $s.unity.end_page - $s.unity.start_page;
             var pdfpath = '../../../../lib/media/content/books/' + $s.book.code + '/unidad' + $s.unity.number + '.pdf';
->>>>>>> f5fb00d97b97e15ceec5f27d5f67c8b22833b042
             $s.getResourcesByUnity();
             $s.real_pg = pages_number + 2;
             if (!$s.noLoad) {
@@ -152,15 +144,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
       } else {
         $s.linkWrong('book');
       }
-<<<<<<< HEAD
-      else{
-        alert(2);
-        $s.linkWrong();
-      }
-    })  
-=======
     })
->>>>>>> f5fb00d97b97e15ceec5f27d5f67c8b22833b042
   }
 
   $s.linkWrong = function (message) {
@@ -914,20 +898,11 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
           $s.insertAfter(newNode.node, referenceNode, function () {
             $s.setStyleNavEvaluate(value.code, newNode.id_select, newNode.score);
           });
-<<<<<<< HEAD
-        });  
-      }else{
-        alert(3);
-        $s.linkWrong();
-      }        
-    })  
-=======
         });
       } else {
         $s.linkWrong('getActivityQuestion');
       }
     })
->>>>>>> f5fb00d97b97e15ceec5f27d5f67c8b22833b042
   }
 
   $s.insertAfter = function (newNode, referenceNode, event) {

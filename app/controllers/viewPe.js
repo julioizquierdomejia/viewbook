@@ -172,6 +172,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
       '<a class="btn btn-ebio" target="_blank" href="' + link_class + '">' + gss.go_to_class + '</a>' +
       '</div>' +
       '</div>';
+    console.log('Entrando linea 175');
     timeout(function () {
 
       $('#container').FlipBook({
@@ -263,8 +264,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
     if (buttonsA.length > 0) {
       [].forEach.call(buttonsA, theButton => {
         statusev = parseInt(theButton.getAttribute("estatus_evaluate"));
-        console.log("Element", theButton);
-
+        console.log(statusev);
         if (parseInt(theButton.getAttribute("type")) == 10) {
           typeEvent = parseInt(theButton.getAttribute("eventTrigger"));
           if (typeEvent == 1) {
@@ -289,6 +289,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
           }
         } else {
           if (statusev == 0) {
+            console.log('Entrando');
             theButton.addEventListener('click', () => {
               $s.showActivity(page, theButton);
             })
@@ -315,6 +316,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
 
     angular.forEach($s.activitysByPage[page], function (resource, key) {
       if (resource.id == ida) {
+        console.log('Entrando 321');
         $s.resourceTTS = resource;
         window.theSynth.cancel();
         window.utterThis = new SpeechSynthesisUtterance($s.resourceTTS.text_extra);
@@ -389,7 +391,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
     acts.getResourcesByUnity($s.unity.id, $s.class_code, function (r) {
       $s.activitys = r.data.result;
 
-      //console.log($s.activitysByPage);
+      console.log($s.activitysByPage);
 
       var cont = 0;
       $s.activitysByPage[0] = [];
@@ -448,12 +450,12 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
 
     if (Array.isArray($s.activitysByPage[page])) {
       if ($s.activitysByPage[page].length > 0) {
-
+        //console.log($s.activitysByPage[page]);
         //document.getElementById("blink_resources_l").style.opacity = 1; 
         angular.forEach($s.activitysByPage[page], function (activity, key) {
           var dataButton = activity;
           console.log(activity);
-
+          //console.log(dataButton.type);
           if (doci.getElementById('ba_' + activity.id) !== null) {
             var element = doci.getElementById('ba_' + activity.id);
             element.parentNode.removeChild(element);
@@ -461,7 +463,6 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
 
           if (parseInt(dataButton.type) == 10) {
             var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1; width: ' + dataButton.width + '%; height: ' + dataButton.height + '%; ';
-
             if ($("#ba_" + dataButton.id).length == 0)
               htmlButton += '<div id="ba_' + dataButton.id + '" page="' + page + '" eventTrigger="' + dataButton.value + '" type="' + dataButton.type + '" code="' + dataButton.code + '" ida="' + dataButton.id + '" class="areaTTS btn-activitys-' + page + ' " style="' + b_display + '""></div>';
 
@@ -472,8 +473,9 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
               htmlButton += '<div id="ba_' + dataButton.id + '" page="' + page + '" eventTrigger="' + dataButton.value + '" type="' + dataButton.type + '" code="' + dataButton.code + '" ida="' + dataButton.id + '" class="areaTTS btn-activitys-' + page + ' " style="' + b_display + '""></div>';
 
           } else {
-            //console.log(dataButton);
+            console.log(dataButton);
             if (dataButton.link_book == 1) {
+              //console.log('Entrando 478');
               var b_display = 'position:absolute; left: ' + dataButton.button_left + '%; top: ' + dataButton.button_top + '%; opacity:1;';
               var b_class = $s.colors[dataButton.button_color].class;
               var b_icon = '<i class="' + dataButton.button_icon + '"></i>';
@@ -498,8 +500,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
   }
 
   $s.updateButtonActivity = function (activity) {
-
-
+    console.log('Entrando 505');
     var iframe = document.getElementsByTagName("iframe")[0];
     var doci = iframe.contentWindow.document;
 
@@ -526,11 +527,11 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
     theButton.setAttribute("class", "btn btn-activitys btn-activitys-" + dataButton.page + " " + b_class);
     theButton.setAttribute("style", b_display);
     theButton.innerHTML = b_icon + dataButton.button_title;
-
-
+    console.log(dataButton);
 
     if (dataButton.estatus_evaluate == '0') {
       theButton.addEventListener('click', () => {
+        console.log(dataButton.page);
         $s.showActivity(dataButton.page, theButton);
       })
     } else {
@@ -578,14 +579,21 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
     'key': 0
   };
   $s.showActivity = function (pag, button) {
+    console.log('Entrando linea 583');
     page = parseInt(button.getAttribute("page"));
     ida = parseInt(button.getAttribute("ida"));
     type = parseInt(button.getAttribute("type"));
     code = button.getAttribute("code");
-
-    //$s.getFormActivity(); 
+    //console.log(page);
+    console.log(ida);
+    //console.log(type);
+    //console.log(code);
+    console.log($s.activitysByPage[page]);
+    //$s.getFormActivity();
     angular.forEach($s.activitysByPage[page], function (resource, key) {
+      console.log(resource);
       if (resource.id == ida) {
+        console.log('Entrando linea 597');
         $s.activityOpen = resource;
         if (type == 2) {
           us.irNewTab(gss.link_pe + '/actividad' + '/' + $s.amb + '/' + $s.class_code + '/' + ida + '/' + code);
@@ -677,6 +685,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
   }
 
   $s.showResource = function (resource) {
+    console.log('Entrando 682');
     $s.resourceOpen = resource;
     timeout(function () {
       $("#resourceModal").addClass("modal fade d-flex").removeClass("d-none");
@@ -748,6 +757,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
   }
 
   $s.getFormActivity = function (activity) {
+    console.log('Entrando');
     //$("#activityModal").modal("show");
     $("#activityModal").addClass("modal fade d-flex").removeClass("d-none");
     $("#activityModal").modal('show');

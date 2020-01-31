@@ -618,7 +618,7 @@
 /* espacio azlado */
 .htmlWelcome {
     /*height: 100%;*/
-    background: radial-gradient(ellipse at bottom, #2387ab 0%, #00b1eb 100%);
+    background: radial-gradient(ellipse at bottom, #2387ab 0%, #E3DEDD 100%);
     overflow: hidden;
     /*height: 100vh;*/
 }

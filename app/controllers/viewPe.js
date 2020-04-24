@@ -119,6 +119,7 @@ app.controller('viewPeController', ['$scope', 'globalSettingsService', 'utilServ
   }
 
   $s.getBookAndUnity = function (code, numberunity) {
+    console.log(code);
     acts.getBookByCode(code, function (rb) {
       $s.book = rb.data.result;
       $s.generateLink($s.book.id);

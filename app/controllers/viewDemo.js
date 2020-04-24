@@ -13,13 +13,16 @@ app.controller('viewDemoController', ['$scope', 'globalSettingsService', 'utilSe
     //$s.espacioAzulado();
     var code = us.getPartUrl(2);
     var name = us.getPartUrl(3);
-    var numberunity = (us.getPartUrl(4) === undefined) ? 1 : us.getPartUrl(4);
+    console.log(us.getPartUrl(3));
+    var numberunity = (us.getPartUrl(3) === undefined) ? 1 : us.getPartUrl(3);
     $s.getBookAndUnity(code, numberunity);
     $s.sumaPageAdd
 
   }
 
   $s.getBookAndUnity = function (code, numberunity) {
+    console.log(code);
+    console.log(numberunity);
     acts.getBookByCode(code, function (rb) {
       $s.book = rb.data.result;
       if ($s.book.id !== undefined) {
